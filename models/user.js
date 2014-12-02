@@ -24,9 +24,9 @@ exports.createUser = function(user, callback) {
   });
 };
 
-exports.updateUser = function(id, user, callback) {
+exports.updateUser = function(username, user, callback) {
   User.findOneAndUpdate({
-    _id : id
+    username : username
   }, user, null, function(err, res) {
     return callback(err, res);
   });
