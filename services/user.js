@@ -3,28 +3,27 @@ var crypto = require('crypto');
 var validator = require('validator');
 
 var db = require('../models/connection').db;
-var Qrcode = require('../models/qrcode');
 var User = require('../models/user');
 
-exports.createUser = function(req, res) {
-  if(!req) return res.error('not null');
-  if(!req.username) return res.error('username not null');
-  if(!req.email) return res.error('email not null');
-  if(!req.password) return res.error('password not null');
+exports.createUser = function(req, callback) {
+  if(!req) return callback('not null');
+  if(!req.username) return callback('username not null');
+  if(!req.email) return callback('email not null');
+  if(!req.password) return callback('password not null');
 
-  if(req.username.length > 15) return res.error('looooong username');
-  if (!validator.isEmail(req.email)) return res.error('email bad format');
+  if(req.username.length > 15) return callback('looooong username');
+  if (!validator.isEmail(req.email)) return callback('email bad format');
 
   async.waterfall([
     function(next) {
         User.getUserByXX(req.username, 'username', function(err, data) {
-        if(data) return res.error('username already exist');
+        if(data) return callback('username already exist');
         next();
       });
     },
     function(next) {
       User.getUserByXX(req.email, 'email', function(err, data) {
-        if(data) return res.error('email already exist');
+        if(data) return callback('email already exist');
         next();
       });
     },
@@ -37,26 +36,26 @@ exports.createUser = function(req, res) {
       }, next);
     }
   ], function(err, data) {
-    if(err) res.error(err);
-    res.send(data);
+    if(err) callback(err);
+    callback(err, data);
   });
 }
 
-exports.updateUser = function(req, res) {
-  if(!req) return res.error('not null');
-  if (!validator.isEmail(req.email)) return res.error('email bad format');
+exports.updateUser = function(req, callback) {
+  if(!req) return callback('not null');
+  if (!validator.isEmail(req.email)) return callback('email bad format');
 
   async.waterfall([
     function(next) {
         User.getUserByXX(req.username, 'username', function(err, data) {
-        if(!data) return res.error('user not exist');
+        if(!data) return callback('user not exist');
         next(null, data);
       });
     },
     function(user, next) {
       if(!req.email) {
         User.getUserByXX(req.email, 'email', function(err, data) {
-          if(data && data.username !== req.username) return res.error('email already exist');
+          if(data && data.username !== req.username) return callback('email already exist');
           next();
         });
       }
@@ -69,8 +68,8 @@ exports.updateUser = function(req, res) {
       User.updateUser(req.username, query, next);
     }
   ], function(err, data) {
-    if(err) res.error(err);
-    res.send(data);
+    if(err) callback(err);
+    callback(err, data);
   });
 }
 
