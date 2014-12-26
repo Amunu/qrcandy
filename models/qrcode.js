@@ -4,7 +4,8 @@ var QrcodeSchema = mongoose.Schema({
   username : String,
   updated_at : Date,
   info : String,
-  type : String
+  type : String,
+  qrcode_id : String
 });
 
 var Qrcode = mongoose.model('Qrcode', QrcodeSchema);
@@ -27,6 +28,7 @@ exports.updateQrcode = function(_id, qrcoce, callback) {
 
 exports.findQrcode = function(opts, callback) {
   var query = {};
+  if(opts.qrcode_id) query.qrcode_id = opts.qrcode_id;
   if(opts.ID) query._id = opts.ID;
   if(opts.username) query.username = opts.username;
 
