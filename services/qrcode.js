@@ -107,8 +107,6 @@ exports.deleteQrcode = function(req, callback) {
   });
 }
 
-
-
 //------------test------------
 
     // exports.createQrcode({

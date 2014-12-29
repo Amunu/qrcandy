@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href="/stylesheets/bootstrap.min.css"></li>
+    <script src='/javascripts/jquery.min.js'></script>
+  </head>
+
+  <body>
+    <div class="page-header">
+      <h1>用户注册 <small>Register</small></h1>
+    </div>
+
+    <div class="alert alert-success alert-dismissible" id = "Success" role="alert" style="display : none">
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+      </button>
+      <a href="#" class="alert-link"></a>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible" id = "Error" role="alert" style="display : none">
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+      </button>
+      <a href="#" class="alert-link"></a>
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label for="username">用户名</label>
+        <input type="text" class="form-control" id="username" placeholder='Username' required><br/>
+      </div>
+
+      <div class="form-group">
+        <label for="userEmail">邮箱</label>
+        <input type="email" class="form-control" id="userEmail" placeholder="Enter email" required><br/>
+      </div>
+
+      <div class="form-group">
+        <label for="userPassword">密码</label>
+        <input type="password" class="form-control" id="password" placeholder="Password" required><br/>
+      </div>
+
+      <div class="form-group" id = 'passwordAgain'>
+        <label for="userPasswordAgain">重复密码</label>
+        <input type="password" class="form-control" id="againPassword" placeholder="Password Again" required><br/>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-block submit">提交</button>
+    </form>
+    <p>若已有账号，点此<a href="/login">登录</a></p>
+  </body>
+
+
+  <script>
+    $(function() {
+      $("button.submit").click(submit);
+      $('button.close').click(function() {
+        $('#Error').css({"display" : "none"});
+        $('#Success').css({"display" : "none"});
+      });
+    });
+
+    function submit() {
+      var data = {};
+      data.username = $('#username').val();
+      data.userEmail = $('#userEmail').val();
+      data.password = $('#password').val();
+      data.againPassword = $('#againPassword').val();
+
+      if(data.password !== data.againPassword) {
+        $(".alert-link").html('两次密码不一致');
+        $('#Error').css({"display" : "block"});
+        return false;
+      }
+
+      if(data.password.length <= 5) {
+        $(".alert-link").html('密码长度需大于等于6位');
+        $('#Error').css({"display" : "block"});
+        return false;
+      }
+
+      if(data.username.length > 15) {
+        $(".alert-link").html('用户名太长了！哼！');
+        $('#Error').css({"display" : "block"});
+        return false;
+      }
+
+      else {
+        $.ajax({
+          type: "POST",
+          url: '/register',
+          data: data,
+          success: function(response) {
+            $('.alert-link').html('注册成功');
+            $('#Success').css({"display" : "block"});
+          },
+          error: function(xhr, status, text) {
+            var response = $.parseJSON(xhr.responseText);
+
+            if (response) {
+              $(".alert-link").html(response.error);
+            } else {
+              $(".alert-link").html('未知错误');
+            }
+            $('#Error').css({"display" : "block"});
+          }
+        });
+      }
+      return false;
+    }
+  </script>
+</html>
