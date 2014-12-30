@@ -73,7 +73,13 @@ exports.updateUser = function(req, callback) {
   });
 }
 
-
+exports.getUserInfo = function(req, callback) {
+  if(!req) return callback('not null');
+  User.getUserByXX(req.username, 'username', function(err, data) {
+    if(!data) return callback('user not exist');
+    callback(null, data);
+  });
+}
 
 // exports.createUser({
 //   username : 'linea',

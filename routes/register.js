@@ -1,9 +1,12 @@
 var qrcodeService = require('../services/qrcode');
 var userService = require('../services/user');
+var session = require('express-session');
 
 module.exports = function(app){
   app.get('/register', function(req, res) {
-    res.render('register', { title: 'register' });
+    res.render('register', {
+      title: 'register'
+    });
   });
 
   app.post('/register', function(req, res) {
