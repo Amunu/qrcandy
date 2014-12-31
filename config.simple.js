@@ -4,5 +4,10 @@ module.exports = {
    mongo : {
     host : 'localhost',
     database : 'qrcandy'
+   },
+   upyun : {
+   	space : 'space_name',
+   	operator : 'operator',
+   	password : 'password'
    }
 }

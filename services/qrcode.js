@@ -4,8 +4,9 @@ var validator = require('validator');
 var QRCode = require('qrcode');
 var UPYUN = require('upyun');
 var fs = require('fs');
+var config = require('../config').upyun;
 
-var upyun = new UPYUN('qrcandy', 'root', 'admin123456', 'v0', 'legacy');
+var upyun = new UPYUN(config.space, config.operator, config.password, 'v0', 'legacy');
 
 var db = require('../models/connection').db;
 var Qrcode = require('../models/qrcode');
