@@ -19,6 +19,7 @@
     "morgan": "~1.0.0",
     "qrcode": "^0.2.12",
     "static-favicon": "~1.0.0",
+    "upyun": "^1.1.2",
     "validator": "^3.22.1"
   }
 }
