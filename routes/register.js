@@ -5,7 +5,8 @@ var session = require('express-session');
 module.exports = function(app){
   app.get('/register', function(req, res) {
     res.render('register', {
-      title: 'register'
+      title: 'register' ,
+      username : null
     });
   });
 

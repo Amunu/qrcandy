@@ -1,12 +1,68 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href="/stylesheets/bootstrap.min.css"></li>
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<% include _partial/header.ejs %>
+  <div class="page-header">
+    <h1>快速开始<small> 创建二维码</small></h1>
+  </div>
+  <div style="padding-bottom: 30px"></div>
+  <% include _partial/alert.ejs %>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-8">
+        <textarea id="text" style="width:750px;outline:0;height:290px;resize: none;font-size:16px;border-radius:3px;border-color:#bbb;padding:10px;font-family:"Microsoft YaHei";overflow:hidden;" required></textarea>
+        <button type="submit" class="btn btn-primary btn-lg btn-block submit">生成二维码</button>
+      </div>
+      <div class="col-xs-4 img" style="border: 1px solid #bbb; width: 290px; height: 290px; border-radius:3px; position: relative; float: left; padding:1px">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(function() {
+      $("button.submit").click(submit);
+      $('button.close').click(function() {
+        $('#Error').css({"display" : "none"});
+        $('#Success').css({"display" : "none"});
+      });
+    });
+
+    function submit() {
+      var data = {};
+      data.text = $('#text').val();
+      if(!data.text) {
+        $(".alert-link").html('文本内容不能为空');
+        $('#Error').css({"display" : "block"});
+        return false;
+      }
+      $.ajax({
+        type: "POST",
+        url: '/qrcode/text',
+        data: data,
+        success: function(response) {
+          if(response.data.info === data.text) {
+            var url = "<img src='http://qrcandy.b0.upaiyun.com/" + response.data.username + '/' + response.data.qrcode_id + "'width='280' height='280'/>"
+            $('.alert-link').html('创建成功');
+            $('#Success').css({"display" : "block"});
+            $(".img").append(url);
+            return false;
+          }
+          else {
+            $(".alert-link").html(response.error);
+            $('#Error').css({"display" : "block"});
+            return false;
+          }
+        },
+        error: function(xhr, status, text) {
+          var response = $.parseJSON(xhr.responseText);
+          if (response) {
+            $(".alert-link").html(response.error);
+          } else {
+            $(".alert-link").html('未知错误');
+          }
+          $('#Error').css({"display" : "block"});
+        }
+      });
+    return false;
+
+    }
+  </script>
+<% include _partial/footer.ejs %>

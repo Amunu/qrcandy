@@ -35,20 +35,20 @@ exports.createQrcode = function(req, callback) {
     function(qrcode, next) {
       qrcode_data = qrcode;
       url = 'http://qrcandy.b0.upaiyun.com/'+ qrcode.username + '/' + short_id;
-      QRCode.save('../qrcode-img/' + short_id + '.png', url, next);
+      QRCode.save('./qrcode-img/' + short_id + '.png', url, next);
     },
     function(data, next) {
-      upyun.uploadFile('/' + qrcode_data.username + '/' + short_id, '../qrcode-img/' + short_id + '.png', 'image/png', true, next);
+      upyun.uploadFile('/' + qrcode_data.username + '/' + short_id, './qrcode-img/' + short_id + '.png', 'image/png', true, next);
     },
     function(data, next) {
-      var localFile = '../qrcode-img/' + short_id + '.png';
-      if(fs.existsSync(localFile)) {
-        fs.unlink(localFile, function(err) {
-          next(err, qrcode_data);
-        });
+        var localFile = './qrcode-img/' + short_id + '.png';
+        if(fs.existsSync(localFile)) {
+          fs.unlink(localFile, function(err) {
+            next(err, qrcode_data);
+          });
+        }
+        else next(null, qrcode_data);
       }
-      else next(null, qrcode_data);
-    }
   ], function(err, data) {
     if(err) callback(err);
     else callback(err, data);
@@ -95,7 +95,7 @@ exports.deleteQrcode = function(req, callback) {
     },
     //delete local qrcode
     function(qrcode, next) {
-      var localFile = '../qrcode-img/' + req.qrcode_id + '.png';
+      var localFile = './qrcode-img/' + req.qrcode_id + '.png';
       if(fs.existsSync(localFile)) {
         fs.unlink(localFile, next);
       }
@@ -142,6 +142,6 @@ exports.deleteQrcode = function(req, callback) {
 // });
 
 
-// upyun.downloadFile('/minary/9f2f2a', function(err, data) {
+// upyun.downloadFile('/minary/7b16e8', function(err, data) {
 //   console.log(err, data);
 // });
