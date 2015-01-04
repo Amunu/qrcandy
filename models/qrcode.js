@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var QrcodeSchema = mongoose.Schema({
   username : String,
   updated_at : Date,
+  created_at : Date,
   info : String,
   type : String,
   qrcode_id : String
@@ -14,13 +15,16 @@ exports.createQrcode = function(opts, callback) {
   var qrcode = new Qrcode({
     username : opts.username,
     info : opts.info,
-    type : opts.type
+    type : opts.type,
+    updated_at : new Date(),
+    created_at : new Date()
   });
 
   qrcode.save(callback);
 }
 
 exports.updateQrcode = function(_id, qrcoce, callback) {
+  qrcoce.updated_at = new Date();
   Qrcode.findOneAndUpdate({
     _id : _id
   }, qrcoce, null, callback);
