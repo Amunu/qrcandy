@@ -1,3 +1,50 @@
 <% include _partial/header.ejs %>
+  <div class="page-header">
+    <h1>已创建的二维码<small> <%= username %></small></h1>
+  </div>
 
+  <div style="padding-top: 19px">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>类型</th>
+          <th>创建时间</th>
+          <th>内容</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    <nav>
+      <ul class="pagination">
+      </ul>
+    </nav>
+  </div>
+
+  <script>
+    $(function() {
+      if(<%= data.pages %>) {
+        var page = 1;
+        var pages = <%= data.pages %>;
+        while(page <= pages) {
+          $(".pagination").append("<li><a href='/user/" + page + "'>" + page + "</a></li>");
+          page ++;
+        }
+      }
+
+      if(<%= data.data.length %>) {
+        var data = <%- JSON.stringify(data.data) %> ;
+        data.forEach(function(qrcode) {
+          $("tbody").append(
+            "<tr><td>" + qrcode.type +
+            "</td><td>" + qrcode.created_at +
+            "</td><td>" + qrcode.info +
+            "</td><td><a href = '#' activeid = '" + qrcode.qrcode_id + "'><span class='glyphicon glyphicon-qrcode'></span>二维码 </a>" +
+            "<a href = '#' activeid = '" + qrcode.qrcode_id + "'><span class='glyphicon glyphicon-trash'></span>删除</a></td></tr>");
+        })
+      }
+    });
+  </script>
 <% include _partial/footer.ejs %>

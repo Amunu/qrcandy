@@ -4,9 +4,43 @@ var session = require('express-session');
 
 module.exports = function(app){
   app.get('/user', function(req, res) {
-    res.render('user', {
-      title: 'user',
-      username: session.user
+    if(!session.user) res.send(400, {error : 'user is null'});
+
+    qrcodeService.findQrcode({
+      username : session.user,
+      page : 1
+    }, function(err, data) {
+      if(err) res.render('user', {
+        title: 'user',
+        username : session.user,
+        error : err
+      });
+      res.render('user', {
+        title: 'user',
+        username: session.user,
+        data : data
+      });
+    });
+  });
+
+  app.get('/user/:page', function(req, res) {
+    if(!session.user) res.send(400, {error : 'user is null'});
+    var page = req.param('page');
+
+    qrcodeService.findQrcode({
+      username : session.user,
+      page : page
+    }, function(err, data) {
+      if(err) res.render('user', {
+        title: 'user',
+        username : session.user,
+        error : err
+      });
+      res.render('user', {
+        title: 'user',
+        username: session.user,
+        data : data
+      });
     });
   });
 

@@ -131,19 +131,20 @@ exports.findQrcode = function(req, callback) {
       }, next);
     }
   ], function(err, data) {
+    var _data = JSON.parse(JSON.stringify(data));
     if(err) callback(err);
-    else callback(null, {pages : pages, data : data});
+    else callback(null, {pages : pages, data : _data});
   });
 }
 
 
 //------------test------------
-exports.findQrcode({
-  username : 'linea',
-  page : 1
-}, function(err, data) {
-  console.log(err, data);
-});
+// exports.findQrcode({
+//   username : 'linea',
+//   page : 1
+// }, function(err, data) {
+//   console.log(err, data);
+// });
 
 
 
