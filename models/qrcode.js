@@ -30,7 +30,33 @@ exports.updateQrcode = function(_id, qrcoce, callback) {
   }, qrcoce, null, callback);
 }
 
+exports.countQrcode = function(opts, callback) {
+  var query = {};
+  if(opts.qrcode_id) query.qrcode_id = opts.qrcode_id;
+  if(opts.ID) query._id = opts.ID;
+  if(opts.username) query.username = opts.username;
+
+  Qrcode
+  .count(query)
+  .exec(callback);
+}
+
 exports.findQrcode = function(opts, callback) {
+  var query = {};
+  if(opts.qrcode_id) query.qrcode_id = opts.qrcode_id;
+  if(opts.username) query.username = opts.username;
+  var limit = opts.limit || 13;
+  var skip = opts.skip;
+
+  Qrcode
+  .find(query)
+  .sort({created_at : -1})
+  .skip(skip)
+  .limit(limit)
+  .exec(callback);
+}
+
+exports.getQrcode = function(opts, callback) {
   var query = {};
   if(opts.qrcode_id) query.qrcode_id = opts.qrcode_id;
   if(opts.ID) query._id = opts.ID;
@@ -38,7 +64,6 @@ exports.findQrcode = function(opts, callback) {
 
   Qrcode.find(query, callback);
 }
-
 
 exports.removeQrcode = function(_id, callback) {
   Qrcode.findOneAndRemove({

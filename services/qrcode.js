@@ -77,7 +77,7 @@ exports.deleteQrcode = function(req, callback) {
   async.waterfall([
     //find qrcode at database
     function(next) {
-      Qrcode.findQrcode({qrcode_id : req.qrcode_id}, next);
+      Qrcode.getQrcode({qrcode_id : req.qrcode_id}, next);
     },
     //delete upyun qrcode png
     function(qrcode, next) {
@@ -108,16 +108,44 @@ exports.deleteQrcode = function(req, callback) {
   });
 }
 
+exports.findQrcode = function(req, callback) {
+  if(!req) return callback('not null');
+  if(!req.username) return callback('user not null');
+  if(!req.page) return callback('page info ne!');
+  var pages = 0;
+  var limit = 13;
+
+  async.waterfall([
+    function(next) {
+      Qrcode.countQrcode({
+        username : req.username
+      }, next);
+    },
+    function(count, next) {
+      pages = parseInt(count % limit !== 0 ? count / limit + 1 : count / limit);
+      skip = (req.page - 1) * limit
+
+      Qrcode.findQrcode({
+        username : req.username,
+        skip : skip
+      }, next);
+    }
+  ], function(err, data) {
+    if(err) callback(err);
+    else callback(null, {pages : pages, data : data});
+  });
+}
+
+
 //------------test------------
+exports.findQrcode({
+  username : 'linea',
+  page : 1
+}, function(err, data) {
+  console.log(err, data);
+});
 
-    // exports.createQrcode({
-    //   username : 'minary',
-    //   info : 'wulalala',
-    //   type : 'what'
-    // }, function(err, data) {
-    //   console.log(err, data);
 
-    // });
 
 // exports.updateQrcode({
 //   qrcode_id : '54978ff55659964d2d0daa60',
