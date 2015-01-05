@@ -1,6 +1,7 @@
 var qrcodeService = require('../services/qrcode');
 var userService = require('../services/user');
 var session = require('express-session');
+var crypto = require('crypto');
 
 module.exports = function(app){
   app.get('/user', function(req, res) {
@@ -10,16 +11,28 @@ module.exports = function(app){
       username : session.user,
       page : 1
     }, function(err, data) {
-      if(err) res.render('user', {
+      if(err) return res.render('user', {
         title: 'user',
         username : session.user,
         error : err
       });
-      res.render('user', {
-        title: 'user',
-        username: session.user,
-        data : data
-      });
+      userService.getUserInfo({
+        username : session.user
+      }, function(err, user) {
+        if(err) return res.render('user', {
+          title: 'user',
+          username : session.user,
+          error : err
+        });
+        var hash = crypto.createHash('md5').update(user.email).digest('hex');
+        res.render('user', {
+          title: 'user',
+          username: session.user,
+          data : data,
+          user : user,
+          hash : hash
+        });
+      })
     });
   });
 
@@ -30,17 +43,30 @@ module.exports = function(app){
     qrcodeService.findQrcode({
       username : session.user,
       page : page
-    }, function(err, data) {
-      if(err) res.render('user', {
+    },  function(err, data) {
+      if(err) return res.render('user', {
         title: 'user',
         username : session.user,
         error : err
       });
-      res.render('user', {
-        title: 'user',
-        username: session.user,
-        data : data
-      });
+      userService.getUserInfo({
+        username : session.user
+      }, function(err, user) {
+        if(err) return res.render('user', {
+          title: 'user',
+          username : session.user,
+          error : err
+        });
+
+        var hash = crypto.createHash('md5').update(user.email).digest('hex');
+        res.render('user', {
+          title: 'user',
+          username: session.user,
+          data : data,
+          user : user,
+          hash : hash
+        });
+      })
     });
   });
 

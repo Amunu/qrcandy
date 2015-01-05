@@ -1,17 +1,20 @@
 <% include _partial/header.ejs %>
-  <div class="page-header">
-    <h1>快速开始<small> 创建二维码</small></h1>
-  </div>
-  <div style="padding-bottom: 30px"></div>
-  <% include _partial/alert.ejs %>
+  <div class="col-lg-9 col-lg-offset-1 col-md-10 col-md-offset-1">
+    <div class="page-header">
+      <h1>快速开始<small> 创建二维码</small></h1>
+    </div>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-8">
-        <textarea id="text" style="width:750px;outline:0;height:290px;resize: none;font-size:16px;border-radius:3px;border-color:#bbb;padding:10px;font-family:"Microsoft YaHei";overflow:hidden;" required></textarea>
-        <button type="submit" class="btn btn-primary btn-lg btn-block submit">生成二维码</button>
-      </div>
-      <div class="col-xs-4 img" style="border: 1px solid #bbb; width: 290px; height: 290px; border-radius:3px; position: relative; float: left; padding:1px">
+    <div style="padding-bottom: 30px"></div>
+    <% include _partial/alert.ejs %>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-8">
+          <textarea id="text" style="width:750px;outline:0;height:290px;resize: none;font-size:16px;border-radius:3px;border-color:#bbb;padding:10px;font-family:"Microsoft YaHei";overflow:hidden;" required></textarea>
+          <button type="submit" class="btn btn-primary btn-lg btn-block submit">生成二维码</button>
+        </div>
+        <div class="col-xs-4 img" style="border: 1px solid #bbb; width: 290px; height: 290px; border-radius:3px; position: relative; float: left; padding:1px">
+        </div>
       </div>
     </div>
   </div>
