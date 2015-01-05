@@ -71,8 +71,12 @@
         var page = 1;
         var pages = <%= data.pages %>;
 
-        if(<%= _page  %> - 1 > 0)
-          $(".pagination").append("<li><a href='/user/<%= _page - 1 %>'" + ">&laquo;</a></li>");
+        if(<%= _page  %> - 1 > 0) {
+          var url = '/user/' + _page;
+          var _page = <%= _page %> - 1;
+          console.log('---', _page);
+          $(".pagination").append("<li><a href='/user/<%= _page - 1 %>'>&laquo;</a></li>");
+        }
 
         while(page <= pages) {
           $(".pagination").append("<li><a href='/user/" + page + "'>" + page + "</a></li>");
@@ -81,9 +85,9 @@
 
         $("[href$='/user/<%= _page %>']").parent().addClass('active');
 
-        if(<%= _page  %> + 1 <= pages)
-          $(".pagination").append("<li><a href='/user/<%= _page + 1 %>'" + ">&raquo;</a></li>");
-
+        if(parseInt(<%= _page  %>) + 1 <= pages) {
+          $(".pagination").append("<li><a href='/user/<%= parseInt(_page) + 1 %>'>&raquo;</a></li>");
+        }
       }
 
       if(<%= data.data.length %>) {
