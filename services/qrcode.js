@@ -114,6 +114,7 @@ exports.findQrcode = function(req, callback) {
   if(!req.page) return callback('page info ne!');
   var pages = 0;
   var limit = 13;
+  var sum = 0;
 
   async.waterfall([
     function(next) {
@@ -122,6 +123,7 @@ exports.findQrcode = function(req, callback) {
       }, next);
     },
     function(count, next) {
+      sum = count
       pages = parseInt(count % limit !== 0 ? count / limit + 1 : count / limit);
       skip = (req.page - 1) * limit
 
@@ -133,7 +135,7 @@ exports.findQrcode = function(req, callback) {
   ], function(err, data) {
     var _data = JSON.parse(JSON.stringify(data));
     if(err) callback(err);
-    else callback(null, {pages : pages, data : _data});
+    else callback(null, {pages : pages, data : _data, count : sum});
   });
 }
 
