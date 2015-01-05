@@ -45,10 +45,12 @@
 
       </tbody>
     </table>
-    <nav>
-      <ul class="pagination">
-      </ul>
-    </nav>
+    <div style=" margin-left: auto; margin-right: auto;">
+      <nav>
+        <ul class="pagination">
+        </ul>
+      </nav>
+    </div>
   </div>
 
   <style type="text/css">
@@ -59,6 +61,7 @@
       font-family: Constantia,Georgia;
     }
   </style>
+
   <script>
     $(function() {
       var str = "<%= hash %>";
@@ -67,16 +70,23 @@
       if(<%= data.pages %>) {
         var page = 1;
         var pages = <%= data.pages %>;
+        $(".pagination").append("<li><a href='#'>&laquo;</a></li>");
         while(page <= pages) {
           $(".pagination").append("<li><a href='/user/" + page + "'>" + page + "</a></li>");
           page ++;
         }
+
+        $("[href$='/user/<%= _page %>']").parent().addClass('active');
+
+        $(".pagination").append("<li><a href='#'>&raquo;</a></li>");
+
       }
 
       if(<%= data.data.length %>) {
         var data = <%- JSON.stringify(data.data) %> ;
+        console.log(<%= _page %>);
         data.forEach(function(qrcode) {
-          if(qrcode.info.length > 40) qrcode.info = qrcode.info.substr(0,37) + '...';
+          if(qrcode.info.length > 30) qrcode.info = qrcode.info.substr(0,27) + '...';
           $("tbody").append(
             "<tr><td>" + qrcode.type +
             "</td><td>" + qrcode.created_at +
@@ -86,6 +96,9 @@
             "<a href = '#' activeid = '" + qrcode.qrcode_id + "' style='padding-left: 10px'><span class='glyphicon glyphicon-trash'></span> 删除  </a></td></tr>");
         })
       }
+
+      $(".user").addClass('active');
+
     });
   </script>
 <% include _partial/footer.ejs %>

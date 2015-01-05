@@ -30,7 +30,8 @@ module.exports = function(app){
           username: session.user,
           data : data,
           user : user,
-          hash : hash
+          hash : hash,
+          _page : 1
         });
       })
     });
@@ -64,7 +65,8 @@ module.exports = function(app){
           username: session.user,
           data : data,
           user : user,
-          hash : hash
+          hash : hash,
+          _page : page
         });
       })
     });
