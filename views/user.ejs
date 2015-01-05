@@ -70,7 +70,10 @@
       if(<%= data.pages %>) {
         var page = 1;
         var pages = <%= data.pages %>;
-        $(".pagination").append("<li><a href='#'>&laquo;</a></li>");
+
+        if(<%= _page  %> - 1 > 0)
+          $(".pagination").append("<li><a href='/user/<%= _page - 1 %>'" + ">&laquo;</a></li>");
+
         while(page <= pages) {
           $(".pagination").append("<li><a href='/user/" + page + "'>" + page + "</a></li>");
           page ++;
@@ -78,13 +81,13 @@
 
         $("[href$='/user/<%= _page %>']").parent().addClass('active');
 
-        $(".pagination").append("<li><a href='#'>&raquo;</a></li>");
+        if(<%= _page  %> + 1 <= pages)
+          $(".pagination").append("<li><a href='/user/<%= _page + 1 %>'" + ">&raquo;</a></li>");
 
       }
 
       if(<%= data.data.length %>) {
         var data = <%- JSON.stringify(data.data) %> ;
-        console.log(<%= _page %>);
         data.forEach(function(qrcode) {
           if(qrcode.info.length > 30) qrcode.info = qrcode.info.substr(0,27) + '...';
           $("tbody").append(
