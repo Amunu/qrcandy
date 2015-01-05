@@ -1,12 +1,12 @@
 <% include _partial/header.ejs %>
-  <div style="padding-top: 19px" class="col-lg-9 col-lg-offset-1 col-md-10 col-md-offset-1">
+  <div style="padding-top: 19px" class="container">
     <div class="jumbotron box">
       <h2>个人信息</h2>
-      <div class="row" style="margin-top:30px;">
+      <div class="row">
         <div class="col-md-3 col-md-offset-1">
           <div class="row">
             <div class="col-md-12">
-              <div class="img-responsive" style="border-radius:10px;"></div>
+              <div class="img-responsive"></div>
             </div>
           </div>
         </div>
@@ -20,11 +20,11 @@
           </ul>
         </div>
         <div class="col-md-4">
-          <ul class="list-unstyled" style="margin-top:10px">
+          <ul class="list-unstyled">
             <li>
-              <%= username %> 有<span style="font-size:34px;" class="info"><%= data.data.length %></span>个二维码
+              <%= username %> 共有<span class="info-number"><%= data.data.length %></span>个二维码
             </li>
-            <li><span style="font-size:34px;" class="info"><%= data.data.length %></span>个活码</li>
+            <li>本页有 <span class="info-number"><%= data.data.length %></span>个二维码</li>
           </ul>
         </div>
     </div>
@@ -42,27 +42,13 @@
 
       </tbody>
     </table>
-    <div style=" margin-left: auto; margin-right: auto;">
+    <div class = "cl-nav">
       <nav>
         <ul class="pagination">
         </ul>
       </nav>
     </div>
   </div>
-
-  <style type="text/css">
-    .list-unstyled {
-      font-size: 18px;
-    }
-    .info-number {
-      font-family: Constantia,Georgia;
-    }
-    .box {
-      border-radius: 3px;
-      box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
-      border-bottom: 1px solid #e2e2e2;
-    }
-  </style>
 
   <script>
     $(function() {

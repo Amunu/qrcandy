@@ -6,3 +6,54 @@ body {
 a {
   color: #00B7FF;
 }
+
+#text {
+  width:750px;
+  outline:0;
+  height:290px;
+  resize: none;
+  font-size:16px;
+  border-radius:3px;
+  border-color:#bbb;
+  padding:10px;
+  font-family:"Microsoft YaHei";
+  overflow:hidden;
+}
+.img {
+  border: 1px solid #bbb;
+  width: 290px;
+  height: 290px;
+  border-radius:3px;
+  position: relative;
+  float: left;
+  padding:1px
+}
+.box {
+  border-radius: 3px;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.list-unstyled {
+  font-size: 18px;
+  margin-top:10px
+}
+.info-number {
+  font-family: Constantia,Georgia;
+  font-size:34px;
+}
+.box {
+  border-radius: 3px;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e2e2e2;
+}
+.row {
+  margin-top:30px;
+}
+.img-responsive {
+  border-radius:10px;
+}
+.cl-nav {
+  margin-left: auto;
+  margin-right: auto;
+}
