@@ -48,6 +48,24 @@
         </ul>
       </nav>
     </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">\("▔□▔)/\("▔□▔)/</h4>
+          </div>
+          <div class="modal-body">
+            确定要删除么?!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">(●'◡'●)ﾉ♥ 骗你的</button>
+            <button type="button" class="btn btn-danger delete">ヽ(￣︿￣　)— 狠心丢掉</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -62,7 +80,6 @@
         if(<%= _page  %> - 1 > 0) {
           var url = '/user/' + _page;
           var _page = <%= _page %> - 1;
-          console.log('---', _page);
           $(".pagination").append("<li><a href='/user/<%= _page - 1 %>'>&laquo;</a></li>");
         }
 
@@ -88,7 +105,7 @@
             "</td><td>" + qrcode.info +
             "</td><td><a href = '#' rel='" + qrcode.qrcode_id + "'><span class='glyphicon glyphicon-qrcode'></span> 二维码 </a>" +
             "<a href = '#' activeid = '" + qrcode.qrcode_id + "' style='padding-left: 10px'><span class='glyphicon glyphicon-pencil'></span>编辑</a>" +
-            "<a href = '#' activeid = '" + qrcode.qrcode_id + "' style='padding-left: 10px'><span class='glyphicon glyphicon-trash'></span> 删除  </a></td></tr>");
+            "<a href = '#' data-toggle='modal' data-target='#myModal' val = '" + qrcode.qrcode_id + "' style='padding-left: 10px' class='qrcode_delete'><span class='glyphicon glyphicon-trash'></span> 删除  </a></td></tr>");
 
           $("[rel=" + qrcode.qrcode_id + "]").popover({
             trigger : 'manual',
@@ -113,8 +130,37 @@
           });
         });
       }
-
       $(".user").addClass('active');
+
+      var currentID = 0;
+
+      $(".qrcode_delete").click(function() {
+        currentID = $(this).attr("val");
+      });
+
+      $("button.delete").click(function() {
+        $.ajax({
+          type: "DELETE",
+          url: '/qrcode',
+          dataType : "json",
+          data : {qrcode_id : currentID},
+          success: function(response) {
+            $('.alert-link').html('删除成功');
+            $('#Success').css({"display" : "block"});
+            location.href ="/user"
+          },
+          error: function(xhr, status, text) {
+            var response = $.parseJSON(xhr.responseText);
+            if (response) {
+              $(".alert-link").html(response.error);
+            } else {
+              $(".alert-link").html('未知错误');
+            }
+            $('#Error').css({"display" : "block"});
+          }
+        });
+      });
+
     });
   </script>
 <% include _partial/footer.ejs %>
