@@ -62,11 +62,19 @@ exports.updateQrcode = function(req, callback) {
   if(!req.info) return callback('info not null');
   if(req.type) return callback('type cannot change');
 
-  Qrcode.updateQrcode(req.qrcode_id, {
-    info : req.info
-  }, function(err, qrcode) {
+  async.waterfall([
+    function (next) {
+      Qrcode.findQrcode({qrcode_id : req.qrcode_id}, next)
+    },
+    function (data, next) {
+      if(!data) callback('qrcode_id error');
+      Qrcode.updateQrcode(data[0]._id, {
+        info : req.info
+      }, next);
+    }
+  ],function (err, data) {
     if(err) callback(err);
-    callback(err, qrcode);
+    else callback(err, data);
   });
 }
 

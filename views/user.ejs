@@ -1,4 +1,6 @@
 <% include _partial/header.ejs %>
+  <% include _partial/alert.ejs %>
+
   <div style="padding-top: 19px" class="container">
     <div class="jumbotron box">
       <h2>个人信息</h2>
@@ -66,13 +68,34 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="editModalLabel">(❁´▽`❁)修改</h4>
+          </div>
+          <div class="modal-body">
+            <textarea class="text"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">ヘ(￣ω￣ヘ)不想改了</button>
+            <button type="button" class="btn btn-success edit">(o`･ω･)ﾉ(ﾉД`) 恩恩,改掉</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
     $(function() {
       var str = "<%= hash %>";
       var url = "<img src='http://www.gravatar.com/avatar/" + str + "?s=150' />";
+
       $(".img-responsive").append(url);
+      $(".user").addClass('active');
+
       if(<%= data.pages %>) {
         var page = 1;
         var pages = <%= data.pages %>;
@@ -98,13 +121,14 @@
       if(<%= data.data.length %>) {
         var data = <%- JSON.stringify(data.data) %> ;
         data.forEach(function(qrcode) {
-          if(qrcode.info.length > 30) qrcode.info = qrcode.info.substr(0,27) + '...';
+          var info = qrcode.info;
+          if(qrcode.info.length > 30) info = qrcode.info.substr(0,27) + '...';
           $("tbody").append(
             "<tr><td>" + qrcode.type +
             "</td><td>" + qrcode.created_at +
-            "</td><td>" + qrcode.info +
+            "</td><td>" + info +
             "</td><td><a href = '#' rel='" + qrcode.qrcode_id + "'><span class='glyphicon glyphicon-qrcode'></span> 二维码 </a>" +
-            "<a href = '#' activeid = '" + qrcode.qrcode_id + "' style='padding-left: 10px'><span class='glyphicon glyphicon-pencil'></span>编辑</a>" +
+            "<a href = '#' data-toggle='modal' data-target='#editModal' content = '" + qrcode.info + "' val = '" + qrcode.qrcode_id + "' style='padding-left: 10px' class='qrcode_edit'><span class='glyphicon glyphicon-pencil'></span>编辑</a>" +
             "<a href = '#' data-toggle='modal' data-target='#myModal' val = '" + qrcode.qrcode_id + "' style='padding-left: 10px' class='qrcode_delete'><span class='glyphicon glyphicon-trash'></span> 删除  </a></td></tr>");
 
           $("[rel=" + qrcode.qrcode_id + "]").popover({
@@ -130,9 +154,8 @@
           });
         });
       }
-      $(".user").addClass('active');
+      var currentID = 0, currentInfo = '';
 
-      var currentID = 0;
 
       $(".qrcode_delete").click(function() {
         currentID = $(this).attr("val");
@@ -161,6 +184,38 @@
         });
       });
 
+      $(".qrcode_edit").click(function() {
+        currentInfo = $(this).attr("content");
+        currentID = $(this).attr("val");
+        $(".text").attr("value", currentInfo);
+
+      });
+
+      $("button.edit").click(function() {
+        $.ajax({
+          type: "PUT",
+          url: '/qrcode',
+          dataType : "json",
+          data : {
+            info : $('.text').val(),
+            qrcode_id : currentID
+          },
+          success: function(response) {
+            $('.alert-link').html('修改成功');
+            $('#Success').css({"display" : "block"});
+            location.href ="/user"
+          },
+          error: function(xhr, status, text) {
+            var response = $.parseJSON(xhr.responseText);
+            if (response) {
+              $(".alert-link").html(response.error);
+            } else {
+              $(".alert-link").html('未知错误');
+            }
+            $('#Error').css({"display" : "block"});
+          }
+        });
+      });
     });
   </script>
 <% include _partial/footer.ejs %>

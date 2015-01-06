@@ -5,7 +5,7 @@ var crypto = require('crypto');
 
 module.exports = function(app){
   app.get('/user', function(req, res) {
-    if(!session.user) res.send(400, {error : 'user is null'});
+    if(!session.user)  return res.redirect('/login');
 
     qrcodeService.findQrcode({
       username : session.user,

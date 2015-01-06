@@ -23,11 +23,11 @@ exports.createQrcode = function(opts, callback) {
   qrcode.save(callback);
 }
 
-exports.updateQrcode = function(_id, qrcoce, callback) {
-  qrcoce.updated_at = new Date();
+exports.updateQrcode = function(_id, qrcode, callback) {
+  qrcode.updated_at = new Date();
   Qrcode.findOneAndUpdate({
     _id : _id
-  }, qrcoce, null, callback);
+  }, qrcode, null, callback);
 }
 
 exports.countQrcode = function(opts, callback) {

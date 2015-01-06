@@ -19,6 +19,19 @@ a {
   font-family:"Microsoft YaHei";
   overflow:hidden;
 }
+
+.text {
+  width:570px;
+  outline:0;
+  height:290px;
+  resize: none;
+  font-size:16px;
+  border-radius:3px;
+  border-color:#bbb;
+  padding:10px;
+  font-family:"Microsoft YaHei";
+  overflow:hidden;
+}
 .img {
   border: 1px solid #bbb;
   width: 290px;
