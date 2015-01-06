@@ -35,7 +35,7 @@ exports.createQrcode = function(req, callback) {
     },
     function(qrcode, next) {
       qrcode_data = qrcode;
-      url = 'http://qrcandy.b0.upaiyun.com/'+ qrcode.username + '/' + short_id;
+      url = 'http://' + req.ip + ':3000/qrcode/' + short_id;
       QRCode.save('./qrcode-img/' + short_id + '.png', url, next);
     },
     function(data, next) {
@@ -145,6 +145,11 @@ exports.findQrcode = function(req, callback) {
     if(err) callback(err);
     else callback(null, {pages : pages, data : _data, count : sum});
   });
+}
+
+exports.getQrcode = function (qrcode_id, callback) {
+  if(!qrcode_id) callback('qrcode_id not null');
+  Qrcode.getQrcode({qrcode_id : qrcode_id}, callback);
 }
 
 
