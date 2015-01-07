@@ -1,5 +1,6 @@
 var qrcodeService = require('../services/qrcode');
 var userService = require('../services/user');
+var xss = require('xss');
 
 module.exports = function(app){
   app.get('/qrcode/:id', function(req, res) {
@@ -17,7 +18,7 @@ module.exports = function(app){
   app.put('/qrcode', function(req, res) {
     if(!req.session.user) return res.send(400, {error: '请先<a href="/login">登录</a>'});
     qrcodeService.updateQrcode({
-      info : req.body.info,
+      info : xss(req.body.info),
       qrcode_id : req.body.qrcode_id
     }, function(err, data) {
       if(err) return res.send(500, {error: err});
@@ -30,7 +31,7 @@ module.exports = function(app){
     qrcodeService.createQrcode({
       username : req.session.user,
       type : 'text',
-      info : req.body.text,
+      info : xss(req.body.text),
       ip : req.ip
     }, function(err, data) {
       if(err) return res.send(500, {error: err});
