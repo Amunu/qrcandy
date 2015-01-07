@@ -35,7 +35,7 @@ exports.createQrcode = function(req, callback) {
     },
     function(qrcode, next) {
       qrcode_data = qrcode;
-      url = 'http://' + req.ip + ':3000/qrcode/' + short_id;
+      url = 'http://qrcandy.f10.moe/qrcode/' + short_id;
       QRCode.save('./qrcode-img/' + short_id + '.png', url, next);
     },
     function(data, next) {
