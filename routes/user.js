@@ -1,33 +1,32 @@
 var qrcodeService = require('../services/qrcode');
 var userService = require('../services/user');
-var session = require('express-session');
 var crypto = require('crypto');
 
 module.exports = function(app){
   app.get('/user', function(req, res) {
-    if(!session.user)  return res.redirect('/login');
+    if(!req.session.user)  return res.redirect('/login');
 
     qrcodeService.findQrcode({
-      username : session.user,
+      username : req.session.user,
       page : 1
     }, function(err, data) {
       if(err) return res.render('user', {
         title: 'user',
-        username : session.user,
+        username : req.session.user,
         error : err
       });
       userService.getUserInfo({
-        username : session.user
+        username : req.session.user
       }, function(err, user) {
         if(err) return res.render('user', {
           title: 'user',
-          username : session.user,
+          username : req.session.user,
           error : err
         });
         var hash = crypto.createHash('md5').update(user.email).digest('hex');
         res.render('user', {
           title: 'user',
-          username: session.user,
+          username: req.session.user,
           data : data,
           user : user,
           hash : hash,
@@ -38,31 +37,31 @@ module.exports = function(app){
   });
 
   app.get('/user/:page', function(req, res) {
-    if(!session.user) res.send(400, {error : 'user is null'});
+    if(!req.session.user) res.send(400, {error : 'user is null'});
     var page = req.param('page');
 
     qrcodeService.findQrcode({
-      username : session.user,
+      username : req.session.user,
       page : page
     },  function(err, data) {
       if(err) return res.render('user', {
         title: 'user',
-        username : session.user,
+        username : req.session.user,
         error : err
       });
       userService.getUserInfo({
-        username : session.user
+        username : req.session.user
       }, function(err, user) {
         if(err) return res.render('user', {
           title: 'user',
-          username : session.user,
+          username : req.session.user,
           error : err
         });
 
         var hash = crypto.createHash('md5').update(user.email).digest('hex');
         res.render('user', {
           title: 'user',
-          username: session.user,
+          username: req.session.user,
           data : data,
           user : user,
           hash : hash,

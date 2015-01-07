@@ -2,8 +2,8 @@ var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var cookieParser = require('cookie-parser');
 var RedisStore = require('connect-redis')(session);
 var bodyParser = require('body-parser');
 
@@ -21,16 +21,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cookieParser('qrcandy'));
 
+app.set('trust proxy', 1);
+
 app.use(session({
   store: new RedisStore({
-    host: "127.0.0.1",
-    port: 6379,
-    db: "session"
+    host: '127.0.0.1',
+    port: 6379
   }),
-  resave:false,
-  saveUninitialized:false,
   secret: 'qrcandy'
-}))
+}));
 
 // app.use('/', routes);
 // app.use('/users', users);
