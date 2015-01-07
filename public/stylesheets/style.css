@@ -7,6 +7,11 @@ a {
   color: #00B7FF;
 }
 
+nav {
+  opacity: 0.7;
+  text-shadow: -1px 0px 0px rgba(0,0,0,0.75);
+}
+
 #text {
   width:750px;
   outline:0;
@@ -34,6 +39,7 @@ a {
 }
 .img {
   border: 1px solid #bbb;
+  background: #fff;
   width: 290px;
   height: 290px;
   border-radius:3px;
@@ -69,4 +75,21 @@ a {
 .cl-nav {
   margin-left: auto;
   margin-right: auto;
+}
+.modal-content {
+  opacity: 0.9;
+}
+footer {
+  background: rgba(0,0,0,0.5);
+  background: #000 9;
+  margin: 50px auto 0 auto;
+  font-family: arial;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  padding-bottom: 10px;
+  text-align: center;
+  color: #fff;
 }

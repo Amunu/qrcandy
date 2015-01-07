@@ -1,22 +1,23 @@
 <% include _partial/header.ejs %>
-  <div class="container">
-    <div class="page-header">
-      <h1>快速开始<small> 创建二维码</small></h1>
-    </div>
+  <div class="container" style="padding-top: 50px">
+    <div class="well box">
+      <div class="page-header">
+        <h1>快速开始<small> 创建二维码</small></h1>
+      </div>
+      <% include _partial/alert.ejs %>
 
-    <div style="padding-bottom: 30px"></div>
-    <% include _partial/alert.ejs %>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-8">
-          <textarea id="text" class="box" required></textarea>
-          <button type="submit" class="btn btn-primary btn-lg btn-block submit">生成二维码</button>
+      <div class="container" style="padding-bottom: 30px">
+        <div class="row">
+          <div class="col-xs-8">
+            <textarea id="text" class="box" required></textarea>
+            <button type="submit" class="btn btn-primary btn-lg btn-block submit">生成二维码</button>
+          </div>
+          <div class="img box"></div>
         </div>
-        <div class="img box"></div>
       </div>
     </div>
   </div>
+</body>
 
   <script>
     $(function() {
