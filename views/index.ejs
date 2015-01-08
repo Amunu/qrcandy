@@ -67,7 +67,7 @@
         data: data,
         success: function(response) {
           if(response.data.info === data.text) {
-            var url = "<img src='http://qrcandy.b0.upaiyun.com/" + response.data.username + '/' + response.data.qrcode_id + "'width='280' height='280'/>"
+            var url = "<img src='http://qrcandy.b0.upaiyun.com/qrcode/" + response.data.qrcode_id + "'width='280' height='280'/>"
             $('.alert-link').html('创建成功');
             $('#Success').css({"display" : "block"});
             $(".img").html("");
@@ -107,7 +107,7 @@
         data: data,
         success: function(response) {
           if(response.data.info === data.url) {
-            var url = "<img src='http://qrcandy.b0.upaiyun.com/" + response.data.username + '/' + response.data.qrcode_id + "'width='280' height='280'/>"
+            var url = "<img src='http://qrcandy.b0.upaiyun.com/qrcode/" + response.data.qrcode_id + "'width='280' height='280'/>"
             $('.alert-link').html('创建成功');
             $('#Success').css({"display" : "block"});
             $(".img_url").html("");

@@ -16,7 +16,6 @@ exports.createQrcode = function(req, callback) {
   if(!req.username) return callback('user not null');
   if(!req.info) return callback('info not null');
   if(!req.type) return callback('type not null');
-
   var url = '';
   var short_id = '';
   var qrcode_data = {};
@@ -39,7 +38,7 @@ exports.createQrcode = function(req, callback) {
       QRCode.save('./qrcode-img/' + short_id + '.png', url, next);
     },
     function(data, next) {
-      upyun.uploadFile('/' + qrcode_data.username + '/' + short_id, './qrcode-img/' + short_id + '.png', 'image/png', true, next);
+      upyun.uploadFile('/qrcode/' + short_id, './qrcode-img/' + short_id + '.png', 'image/png', true, next);
     },
     function(data, next) {
         var localFile = './qrcode-img/' + short_id + '.png';
@@ -90,7 +89,7 @@ exports.deleteQrcode = function(req, callback) {
     //delete upyun qrcode png
     function(qrcode, next) {
       if(!qrcode || !qrcode.length) return callback('qrcode not found');
-      upyun.removeFile('/' + qrcode[0].username + '/' + req.qrcode_id, function(err, data) {
+      upyun.removeFile('/qrcode/' + req.qrcode_id, function(err, data) {
         if(err) callback(err);
         if(data.statusCode === 200) {
           next(err, qrcode, data);
