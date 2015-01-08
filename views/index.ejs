@@ -1,19 +1,40 @@
 <% include _partial/header.ejs %>
   <div class="container" style="padding-top: 50px">
-    <div class="well box">
+    <div class="box">
       <div class="page-header">
         <h1>快速开始<small> 创建二维码</small></h1>
       </div>
       <% include _partial/alert.ejs %>
 
       <div class="container" style="padding-bottom: 30px">
-        <div class="row">
-          <div class="col-xs-8">
-            <textarea id="text" class="box" required></textarea>
-            <button type="submit" class="btn btn-primary btn-lg btn-block submit">生成二维码</button>
+      <ul class="nav nav-tabs" role="tablist" id="myTab">
+        <li role="presentation" class="active"><a href="#text" role="tab" data-toggle="tab">文本</a></li>
+        <li role="presentation"><a href="#link" role="tab" data-toggle="tab">网址</a></li>
+        <li role="presentation"><a href="#img" role="tab" data-toggle="tab">图片</a></li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="text">
+          <div class="row">
+            <div class="col-xs-8">
+              <textarea id="text_qrcode" class="box" required></textarea>
+              <button type="submit" class="btn btn-primary btn-lg btn-block submit">生成二维码</button>
+            </div>
+            <div class="img box"></div>
           </div>
-          <div class="img box"></div>
         </div>
+        <div role="tabpanel" class="tab-pane fade row" id="link">
+          <div class="col-xs-7" style="padding-top: 50px">
+            <input type="text" name="text" id="url" placeholder="请输入网址" value="http://" class="dos collect">
+            <div style="text-align: center; margin-top: 35px;">
+              <p style="color: #b4bcc2">(੭ु≧▽≦)੭ु  好紧张好紧张！还差一步了！</p>
+              <button type="submit" class="btn btn-primary submit_url">生成二维码</button>
+            </div>
+          </div>
+          <div class="img_url box"></div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="img">...</div>
+      </div>
+
       </div>
     </div>
   </div>
@@ -22,6 +43,7 @@
   <script>
     $(function() {
       $("button.submit").click(submit);
+      $("button.submit_url").click(submit_url);
       $('button.close').click(function() {
         $('#Error').css({"display" : "none"});
         $('#Success').css({"display" : "none"});
@@ -66,8 +88,47 @@
           $('#Error').css({"display" : "block"});
         }
       });
-    return false;
+      return false;
+    }
 
+    function submit_url() {
+      var data = {};
+      data.url = $('#url').val();
+      if(!data.url || data.url === "http://" || data.url === "https://") {
+        $(".alert-link").html('网址不能为空');
+        $('#Error').css({"display" : "block"});
+        return false;
+      }
+      $.ajax({
+        type: "POST",
+        url: '/qrcode/url',
+        data: data,
+        success: function(response) {
+          if(response.data.info === data.url) {
+            var url = "<img src='http://qrcandy.b0.upaiyun.com/" + response.data.username + '/' + response.data.qrcode_id + "'width='280' height='280'/>"
+            $('.alert-link').html('创建成功');
+            $('#Success').css({"display" : "block"});
+            $(".img_url").html("");
+            $(".img_url").append(url);
+            return false;
+          }
+          else {
+            $(".alert-link").html(response.error);
+            $('#Error').css({"display" : "block"});
+            $('#myTab a:eq(1)').tab('show');
+          }
+        },
+        error: function(xhr, status, text) {
+          var response = $.parseJSON(xhr.responseText);
+          if (response) {
+            $(".alert-link").html(response.error);
+          } else {
+            $(".alert-link").html('未知错误');
+          }
+          $('#Error').css({"display" : "block"});
+        }
+      });
+      return false;
     }
   </script>
 <% include _partial/footer.ejs %>
