@@ -32,7 +32,9 @@
           </div>
           <div class="img_url box"></div>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="img">...</div>
+        <div role="tabpanel" class="tab-pane fade" id="img">
+          <input type="file" id="inputFile" class="form-control">
+        </div>
       </div>
 
       </div>
@@ -53,7 +55,7 @@
 
     function submit() {
       var data = {};
-      data.text = $('#text').val();
+      data.text = $('#text_qrcode').val();
       if(!data.text) {
         $(".alert-link").html('文本内容不能为空');
         $('#Error').css({"display" : "block"});
