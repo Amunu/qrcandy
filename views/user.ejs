@@ -3,7 +3,7 @@
 
   <div style="padding-top: 19px" class="container">
     <div class="jumbotron box">
-      <h2>个人信息</h2>
+      <h2>个人信息<small style="color: #b4bcc2">（=ˇωˇ=）</small></h2>
       <div class="row">
         <div class="col-md-3 col-md-offset-1">
           <div class="row">
@@ -123,8 +123,18 @@
         data.forEach(function(qrcode) {
           var info = qrcode.info;
           if(qrcode.info.length > 30) info = qrcode.info.substr(0,27) + '...';
+          var type_icon = 'glyphicon glyphicon-link';
+          var type = '链接';
+          if(qrcode.type === 'text') {
+            type_icon = 'glyphicon glyphicon-file';
+            type = "文本"
+          }
+          if(qrcode.type === 'img') {
+            type_icon = 'glyphicon glyphicon-picture';
+            type = "图片"
+          }
           $("tbody").append(
-            "<tr><td>" + qrcode.type +
+            "<tr><td>" + "<span class='" + type_icon + "'></span>  " + type +
             "</td><td>" + qrcode.created_at +
             "</td><td>" + info +
             "</td><td><a href = '#' rel='" + qrcode.qrcode_id + "'><span class='glyphicon glyphicon-qrcode'></span> 二维码 </a>" +
