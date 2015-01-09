@@ -14,7 +14,6 @@ var Qrcode = require('../models/qrcode');
 exports.createQrcode = function(req, callback) {
   if(!req) return callback('not null');
   if(!req.username) return callback('user not null');
-  if(!req.info) return callback('info not null');
   if(!req.type) return callback('type not null');
   var url = '';
   var short_id = '';
@@ -22,6 +21,10 @@ exports.createQrcode = function(req, callback) {
 
   async.waterfall([
     function(next) {
+      if(req.type === 'img' && !req.info) {
+        req.info = '(╯•̀ὤ•́)╯ 未备注';
+      }
+      if(!req.info) return callback('info not null');
       Qrcode.createQrcode({
         username : req.username,
         info : req.info,
@@ -41,14 +44,32 @@ exports.createQrcode = function(req, callback) {
       upyun.uploadFile('/qrcode/' + short_id, './qrcode-img/' + short_id + '.png', 'image/png', true, next);
     },
     function(data, next) {
-        var localFile = './qrcode-img/' + short_id + '.png';
+      var localFile = './qrcode-img/' + short_id + '.png';
+      if(fs.existsSync(localFile)) {
+        fs.unlink(localFile, function(err) {
+          next(err, qrcode_data);
+        });
+      }
+      else next(null, qrcode_data);
+    },
+    function(qrcode_data, next) {
+      if(req.type === 'img') {
+        upyun.uploadFile('/img/' + short_id, './' + req.img.path, '', true, function(err, data) {
+          next(err, qrcode_data, data);
+        });
+      }
+      else next(null, qrcode_data);
+    },
+    function(qrcode_data, data, next) {
+      if(data) {
+        var localFile = './' + req.img.path;
         if(fs.existsSync(localFile)) {
           fs.unlink(localFile, function(err) {
             next(err, qrcode_data);
           });
         }
-        else next(null, qrcode_data);
       }
+    }
   ], function(err, data) {
     if(err) callback(err);
     else callback(err, data);

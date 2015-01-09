@@ -1,42 +1,59 @@
 <% include _partial/header.ejs %>
   <div class="container" style="padding-top: 50px">
-    <div class="box well">
+    <div class="box">
       <div class="page-header">
         <h1>快速开始<small> 创建二维码 (　･ิω･ิ)ノิ </small></h1>
       </div>
       <% include _partial/alert.ejs %>
 
       <div class="container" style="padding-bottom: 30px">
-      <ul class="nav nav-tabs" role="tablist" id="myTab">
-        <li role="presentation" class="active"><a href="#text" role="tab" data-toggle="tab">文本</a></li>
-        <li role="presentation"><a href="#link" role="tab" data-toggle="tab">网址</a></li>
-        <li role="presentation"><a href="#img" role="tab" data-toggle="tab">图片</a></li>
-      </ul>
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active" id="text">
-          <div class="row">
-            <div class="col-xs-8">
-              <textarea id="text_qrcode" class="box" required></textarea>
-              <button type="submit" class="btn btn-primary btn-lg btn-block submit">生成二维码</button>
-            </div>
-            <div class="img box"></div>
-          </div>
-        </div>
-        <div role="tabpanel" class="tab-pane fade row" id="link">
-          <div class="col-xs-7" style="padding-top: 50px">
-            <input type="text" name="text" id="url" placeholder="请输入网址" value="http://" class="dos collect">
-            <div style="text-align: center; margin-top: 35px;">
-              <p style="color: #b4bcc2">(੭ु≧▽≦)੭ु  好紧张好紧张！还差一步了！</p>
-              <button type="submit" class="btn btn-primary submit_url">生成二维码</button>
+        <ul class="nav nav-tabs" role="tablist" id="myTab">
+          <li role="presentation" class="active"><a href="#text" role="tab" data-toggle="tab">文本</a></li>
+          <li role="presentation"><a href="#link" role="tab" data-toggle="tab">网址</a></li>
+          <li role="presentation"><a href="#img" role="tab" data-toggle="tab">图片</a></li>
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane fade in active" id="text">
+            <div class="row">
+              <div class="col-xs-8">
+                <textarea id="text_qrcode" class="box" required></textarea>
+                <button type="submit" class="btn btn-primary btn-lg btn-block submit">生成二维码</button>
+              </div>
+              <div class="img box"></div>
             </div>
           </div>
-          <div class="img_url box"></div>
+          <div role="tabpanel" class="tab-pane fade row" id="link">
+            <div class="col-xs-7" style="padding-top: 50px">
+              <input type="text" name="text" id="url" placeholder="请输入网址" value="http://" class="dos collect">
+              <div style="text-align: center; margin-top: 35px;">
+                <p style="color: #b4bcc2">(੭ु≧▽≦)੭ु  好紧张好紧张！还差一步了！</p>
+                <button type="submit" class="btn btn-primary submit_url">生成二维码</button>
+              </div>
+            </div>
+            <div class="img_url box"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="img">
+<!--             <div class="container row">
+              <span class="btn btn-success fileinput-button">
+                  <i class="glyphicon glyphicon-plus"></i>
+                  <span>上传图片...</span>
+                  <input id="fileupload" type="file" name="files[]" multiple>
+              </span>
+              <br>
+              <br>
+              <div id="progress" class="progress">
+                <div class="progress-bar progress-bar-success"></div>
+              </div>
+              <div id="files" class="files"></div>
+              <br>
+            </div> -->
+            <form method="post" enctype="multipart/form-data" action="/file-upload">
+              <input type='file' name='file' id="file"/>
+              <input type="text" name="text" />
+              <input type='submit'>
+            </form>
+          </div>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="img">
-          <input type="file" id="inputFile" class="form-control">
-        </div>
-      </div>
-
       </div>
     </div>
   </div>
@@ -44,6 +61,28 @@
 
   <script>
     $(function() {
+      'use strict';
+      // Change this to the location of your server-side upload handler:
+      var url = 'f10.moe'
+      uploadButton = $('<button/>')
+        .addClass('btn btn-primary')
+        .prop('disabled', true)
+        .text('Processing...')
+        .on('click', function () {
+          var $this = $(this),
+            data = $this.data();
+          $this
+            .off('click')
+            .text('Abort')
+            .on('click', function () {
+                $this.remove();
+                data.abort();
+            });
+          data.submit().always(function () {
+            $this.remove();
+          });
+        });
+
       $("button.submit").click(submit);
       $("button.submit_url").click(submit_url);
       $('button.close').click(function() {
@@ -51,6 +90,20 @@
         $('#Success').css({"display" : "none"});
       });
       $(".index").addClass('active');
+
+      $('#fileupload').fileupload({
+        url: "../qrcode-img/",
+        dataType: 'json',
+        autoUpload: false,
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        maxFileSize: 5000000, // 5 MB
+        // Enable image resizing, except for Android and Opera,
+        // which actually support image resizing, but fail to
+        // send Blob objects via XHR requests:
+        disableImageResize: /Android(?!.*Chrome)|Opera/
+            .test(window.navigator.userAgent),
+        previewCrop: true
+      });
     });
 
     function submit() {
@@ -133,4 +186,5 @@
       return false;
     }
   </script>
+  <script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
 <% include _partial/footer.ejs %>
