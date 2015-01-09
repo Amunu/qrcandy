@@ -61,28 +61,6 @@
 
   <script>
     $(function() {
-      'use strict';
-      // Change this to the location of your server-side upload handler:
-      var url = 'f10.moe'
-      uploadButton = $('<button/>')
-        .addClass('btn btn-primary')
-        .prop('disabled', true)
-        .text('Processing...')
-        .on('click', function () {
-          var $this = $(this),
-            data = $this.data();
-          $this
-            .off('click')
-            .text('Abort')
-            .on('click', function () {
-                $this.remove();
-                data.abort();
-            });
-          data.submit().always(function () {
-            $this.remove();
-          });
-        });
-
       $("button.submit").click(submit);
       $("button.submit_url").click(submit_url);
       $('button.close').click(function() {
@@ -91,19 +69,19 @@
       });
       $(".index").addClass('active');
 
-      $('#fileupload').fileupload({
-        url: "../qrcode-img/",
-        dataType: 'json',
-        autoUpload: false,
-        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-        maxFileSize: 5000000, // 5 MB
-        // Enable image resizing, except for Android and Opera,
-        // which actually support image resizing, but fail to
-        // send Blob objects via XHR requests:
-        disableImageResize: /Android(?!.*Chrome)|Opera/
-            .test(window.navigator.userAgent),
-        previewCrop: true
-      });
+      // $('#fileupload').fileupload({
+      //   url: "../qrcode-img/",
+      //   dataType: 'json',
+      //   autoUpload: false,
+      //   acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+      //   maxFileSize: 5000000, // 5 MB
+      //   // Enable image resizing, except for Android and Opera,
+      //   // which actually support image resizing, but fail to
+      //   // send Blob objects via XHR requests:
+      //   disableImageResize: /Android(?!.*Chrome)|Opera/
+      //       .test(window.navigator.userAgent),
+      //   previewCrop: true
+      // });
     });
 
     function submit() {

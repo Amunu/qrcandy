@@ -58,9 +58,10 @@ exports.createQrcode = function(req, callback) {
           next(err, qrcode_data, data);
         });
       }
-      else next(null, qrcode_data);
+      else next(null, qrcode_data, null);
     },
     function(qrcode_data, data, next) {
+      console.log(data);
       if(data) {
         var localFile = './' + req.img.path;
         if(fs.existsSync(localFile)) {
@@ -69,6 +70,7 @@ exports.createQrcode = function(req, callback) {
           });
         }
       }
+      else next(null, qrcode_data);
     }
   ], function(err, data) {
     if(err) callback(err);
