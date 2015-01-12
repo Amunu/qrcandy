@@ -38,7 +38,7 @@ exports.createQrcode = function(req, callback) {
 
   async.waterfall([
     function(next) {
-      if(req.type === 'img' && !req.info) {
+      if(req.type === 'img') {
         req.info = '(╯•̀ὤ•́)╯ 未备注';
       }
       if(!req.info) return callback('info not null');
@@ -54,7 +54,8 @@ exports.createQrcode = function(req, callback) {
     },
     function(qrcode, next) {
       qrcode_data = qrcode;
-      url = 'http://qrcandy.f10.moe/qrcode/' + short_id;
+     // url = 'http://qrcandy.f10.moe/qrcode/' + short_id;
+      url = 'http://10.0.1.111:8080/qrcode/' + short_id;
       QRCode.save('./qrcode-img/' + short_id + '.png', url, next);
     },
     function(data, next) {

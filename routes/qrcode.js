@@ -11,13 +11,21 @@ module.exports = function(app){
       if(qrcode[0].type === 'text') {
         res.render('qrcode', {
           qrcode_id: qrcode[0].qrcode_id,
-          info : qrcode[0].info
+          info : qrcode[0].info,
+          imgs : ''
         });
       }
       else if(qrcode[0].type === 'url') {
         res.status(302);
         res.location(qrcode[0].info);
         res.end();
+      }
+      else if(qrcode[0].type === 'img') {
+        res.render('qrcode', {
+          qrcode_id: qrcode[0].qrcode_id,
+          imgs : qrcode[0].info,
+          info : ''
+        });
       }
     });
   });
@@ -61,14 +69,12 @@ module.exports = function(app){
 
   app.post('/qrcode/imgs', function(req, res) {
     if(!req.session.user) return res.send(400, {error: '请先<a href="/login">登录</a>'});
-    console.log(req.body);
     qrcodeService.createQrcode({
       username : req.session.user,
       type : 'img',
       info : req.body.imgs,
       ip : req.ip
     }, function(err, data) {
-      console.log(err, data);
       if(err) return res.send(500, {error: err});
       return res.send(200, {data : data});
     });

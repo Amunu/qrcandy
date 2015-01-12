@@ -140,7 +140,6 @@
             "</td><td><a href = '#' rel='" + qrcode.qrcode_id + "'><span class='glyphicon glyphicon-qrcode'></span> 二维码 </a>" +
             "<a href = '#' data-toggle='modal' data-target='#editModal' content = '" + qrcode.info + "' val = '" + qrcode.qrcode_id + "' style='padding-left: 10px' class='qrcode_edit'><span class='glyphicon glyphicon-pencil'></span>编辑</a>" +
             "<a href = '#' data-toggle='modal' data-target='#myModal' val = '" + qrcode.qrcode_id + "' style='padding-left: 10px' class='qrcode_delete'><span class='glyphicon glyphicon-trash'></span> 删除  </a></td></tr>");
-
           $("[rel=" + qrcode.qrcode_id + "]").popover({
             trigger : 'manual',
             placement : 'right',

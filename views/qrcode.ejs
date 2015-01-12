@@ -3,14 +3,36 @@
   <head>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href="/stylesheets/bootstrap.min.css"></li>
+    <script src='/javascripts/jquery.min.js'></script>
+    <script src='/javascripts/bootstrap.min.js'></script>
   </head>
   <body>
     <div class="container">
       <div class="page-header">
         <h1>Qrcandy <small>(´◉㉨◉)</small></h1>
       </div>
-      <div class="well well-lg"><%= info %></div>
+      <div class="well well-lg">
+        <div class="row"></div>
+      </div>
     </div>
     </div>
   </body>
+  <script>
+  $(function () {
+    if(!"<%= info %>") {
+      if(<%= imgs.length %>) {
+        var imgs = <%- JSON.stringify(imgs) %>.split(',') ;
+        imgs.forEach(function (img) {
+          var url = 'http://qrcandy.b0.upaiyun.com' + img;
+          $(".row").append("<div class='col-xs-7 col-md-6'><a href='#' class='thumbnail'><img src='" + url + "' /></a></div>");
+        })
+      }
+    }
+    else {
+      $(".well").html("<%= info %>");
+    }
+  })
+
+  </script>
 </html>
+
