@@ -4,7 +4,7 @@ var userService = require('../services/user');
 module.exports = function(app){
   app.get('/register', function(req, res) {
     res.render('register', {
-      title: 'register' ,
+      title: 'Qrcandy-register' ,
       username : null
     });
   });

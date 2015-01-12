@@ -9,7 +9,7 @@ module.exports = function(app){
 
   app.get('/', function(req, res) {
     res.render('index', {
-      title: 'index',
+      title: 'Qrcandy-index',
       username: req.session.user
     });
   });

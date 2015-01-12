@@ -5,7 +5,7 @@ var userService = require('../services/user');
 module.exports = function(app){
   app.get('/login', function(req, res) {
     res.render('login', {
-      title: 'login' ,
+      title: 'Qrcandy-login' ,
       username: req.session.user
     });
   });

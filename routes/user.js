@@ -11,7 +11,7 @@ module.exports = function(app){
       page : 1
     }, function(err, data) {
       if(err) return res.render('user', {
-        title: 'user',
+        title: 'Qrcandy-' + req.session.user,
         username : req.session.user,
         error : err
       });
@@ -19,13 +19,13 @@ module.exports = function(app){
         username : req.session.user
       }, function(err, user) {
         if(err) return res.render('user', {
-          title: 'user',
+          title: 'Qrcandy-' + req.session.user,
           username : req.session.user,
           error : err
         });
         var hash = crypto.createHash('md5').update(user.email).digest('hex');
         res.render('user', {
-          title: 'user',
+          title: 'Qrcandy-' + req.session.user,
           username: req.session.user,
           data : data,
           user : user,
