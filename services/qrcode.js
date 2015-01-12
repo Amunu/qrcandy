@@ -5,6 +5,7 @@ var QRCode = require('qrcode');
 var UPYUN = require('upyun');
 var fs = require('fs');
 var config = require('../config').upyun;
+var qrcode_url = require('../config').url;
 
 var upyun = new UPYUN(config.space, config.operator, config.password, 'v0', 'legacy');
 
@@ -38,9 +39,6 @@ exports.createQrcode = function(req, callback) {
 
   async.waterfall([
     function(next) {
-      if(req.type === 'img') {
-        req.info = '(╯•̀ὤ•́)╯ 未备注';
-      }
       if(!req.info) return callback('info not null');
       Qrcode.createQrcode({
         username : req.username,
@@ -54,9 +52,7 @@ exports.createQrcode = function(req, callback) {
     },
     function(qrcode, next) {
       qrcode_data = qrcode;
-     // url = 'http://qrcandy.f10.moe/qrcode/' + short_id;
-      url = 'http://10.0.1.111:8080/qrcode/' + short_id;
-      QRCode.save('./qrcode-img/' + short_id + '.png', url, next);
+      QRCode.save('./qrcode-img/' + short_id + '.png', qrcode_url + short_id, next);
     },
     function(data, next) {
       upyun.uploadFile('/qrcode/' + short_id, './qrcode-img/' + short_id + '.png', 'image/png', true, next);

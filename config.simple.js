@@ -9,5 +9,6 @@ module.exports = {
    	space : 'space_name',
    	operator : 'operator',
    	password : 'password'
-   }
+   },
+   url :'http://qrcandy.f10.moe/qrcode/'
 }
