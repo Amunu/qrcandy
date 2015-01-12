@@ -11,6 +11,23 @@ var upyun = new UPYUN(config.space, config.operator, config.password, 'v0', 'leg
 var db = require('../models/connection').db;
 var Qrcode = require('../models/qrcode');
 
+
+exports.uploadIMG = function(req, callback) {
+  if(!req) return callback('not null');
+  if(!req.user_id) return callback('user_id not null');
+  if(!req.img) return callback('img not null');
+  var url = '/img/' + req.user_id + '/' + (+new Date());
+  upyun.uploadFile(url, './' + req.img.path, '', true, function (err, data) {
+    data.url = url;
+    var localFile = './' + req.img.path;
+      if(fs.existsSync(localFile)) {
+        fs.unlink(localFile, function(err) {
+          callback(err, data);
+        });
+      }
+  });
+}
+
 exports.createQrcode = function(req, callback) {
   if(!req) return callback('not null');
   if(!req.username) return callback('user not null');
@@ -51,30 +68,10 @@ exports.createQrcode = function(req, callback) {
         });
       }
       else next(null, qrcode_data);
-    },
-    function(qrcode_data, next) {
-      if(req.type === 'img') {
-        upyun.uploadFile('/img/' + short_id, './' + req.img.path, '', true, function(err, data) {
-          next(err, qrcode_data, data);
-        });
-      }
-      else next(null, qrcode_data, null);
-    },
-    function(qrcode_data, data, next) {
-      console.log(data);
-      if(data) {
-        var localFile = './' + req.img.path;
-        if(fs.existsSync(localFile)) {
-          fs.unlink(localFile, function(err) {
-            next(err, qrcode_data);
-          });
-        }
-      }
-      else next(null, qrcode_data);
     }
-  ], function(err, data) {
+  ], function(err, qrcode_data) {
     if(err) callback(err);
-    else callback(err, data);
+    else callback(err, qrcode_data);
   });
 }
 

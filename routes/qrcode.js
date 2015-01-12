@@ -59,6 +59,21 @@ module.exports = function(app){
     });
   });
 
+  app.post('/qrcode/imgs', function(req, res) {
+    if(!req.session.user) return res.send(400, {error: '请先<a href="/login">登录</a>'});
+    console.log(req.body);
+    qrcodeService.createQrcode({
+      username : req.session.user,
+      type : 'img',
+      info : req.body.imgs,
+      ip : req.ip
+    }, function(err, data) {
+      console.log(err, data);
+      if(err) return res.send(500, {error: err});
+      return res.send(200, {data : data});
+    });
+  });
+
   app.delete('/qrcode', function(req, res) {
     if(!req.session.user) return res.send(400, {error: '请先<a href="/login">登录</a>'});
     if(!req.body.qrcode_id) return res.send(400, {error: 'qrcode not null'});

@@ -19,6 +19,7 @@ module.exports = function(app){
       if(data.password !== password) return res.send(400, {error: '密码错误'});
       else {
         req.session.user = req.body.username;
+        req.session.user_id = data.id.substring(18, 24);
         return res.send(200, {result : 'ok'});
       }
     })

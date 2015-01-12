@@ -15,18 +15,19 @@ module.exports = function(app){
   });
 
   app.post('/file-upload',function(req, res){
+    if(!req.session.user) return res.send(400, {error: '请先<a href="/login">登录</a>'});
     var form = new multiparty.Form({uploadDir :'./qrcode-img/'});
     form.parse(req, function(err, fields, files) {
+      console.log(err, fields, files);
       if(err) return res.send(500, {error: err});
-      qrcodeService.createQrcode({
-        username : req.session.user,
-        info : fields.text[0],
-        type : 'img',
-        img : files.file[0]
-      }, function(err, data) {
+
+      qrcodeService.uploadIMG({
+        user_id : req.session.user_id,
+        img : files.files[0]
+      }, function (err, data) {
         if(err) return res.send(500, {error: err});
-        else res.send(200, {qrcode: data});
-      })
+        else res.send(200, {qrcode_url: data.url});
+      });
     });
   });
 }

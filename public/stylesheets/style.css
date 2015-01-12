@@ -12,6 +12,11 @@ nav {
   text-shadow: -1px 0px 0px rgba(0,0,0,0.75);
 }
 
+.bar {
+  height: 18px;
+  background: green ;
+}
+
 #text_qrcode {
   width:750px ;
   outline:0;
@@ -37,18 +42,7 @@ nav {
   font-family:"Microsoft YaHei";
   overflow:hidden;
 }
-.img {
-  border: 1px solid #bbb;
-  background: #fff;
-  width: 290px;
-  height: 290px;
-  border-radius:3px;
-  position: relative;
-  float: left;
-  padding:1px;
-}
-
-.img_url {
+.img, .img_url, .img_imgs {
   border: 1px solid #bbb;
   background: #fff;
   width: 290px;
@@ -80,6 +74,10 @@ nav {
 }
 .row {
   margin-top:30px;
+}
+.zow {
+  margin-top:30px;
+  margin-left: 30px;
 }
 .img-responsive {
   border-radius:10px;
