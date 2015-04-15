@@ -15,7 +15,7 @@
     "ejs": "~0.8.5",
     "express": "~4.2.0",
     "express-session": "^1.9.3",
-    "mongoose": "^3.8.19",
+    "mongoose": "^4.0.1",
     "morgan": "~1.0.0",
     "multiparty": "^4.1.0",
     "qrcode": "^0.2.12",

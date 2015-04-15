@@ -3,6 +3,8 @@ module.exports = {
    cluster_sock: 'run/cluster.sock',
    mongo : {
     host : 'localhost',
+    user : 'admin',
+    password : 'password',
     database : 'qrcandy'
    },
    upyun : {
