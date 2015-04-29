@@ -52,6 +52,7 @@ exports.createQrcode = function(req, callback) {
     },
     function(qrcode, next) {
       qrcode_data = qrcode;
+      qrcode_data.qrcode_id = short_id;
       QRCode.save('./qrcode-img/' + short_id + '.png', qrcode_url + short_id, next);
     },
     function(data, next) {
